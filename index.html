@@ -1,83 +1,128 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
     <title>Cotizador Profesional Bambu Lab A1 Mini</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1>💰 Cotizador de Impresión 3D</h1>
-        
-        <div class="input-section">
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="precioPlastico">
-                        Precio por kilo de plástico (ARS)
-                        <span class="tooltip">(Costo actual del material por kilogramo)</span>
-                    </label>
-                    <input type="number" id="precioPlastico" placeholder="Ej: 7000 ARS/kg" min="0">
-                </div>
+      <h1>💰 Cotizador de Impresión 3D</h1>
 
-                <div class="input-group">
-                    <label for="cantidadPlastico">
-                        Plástico utilizado (gramos)
-                        <span class="tooltip">(Peso real utilizado en la impresión)</span>
-                    </label>
-                    <input type="number" id="cantidadPlastico" placeholder="Ej: 150 g" min="0">
-                </div>
-            </div>
+      <div class="input-section">
+        <div class="input-row">
+          <div class="input-group">
+            <label for="precioPlastico">
+              Precio por kilo de plástico (ARS)
+              <span class="tooltip"
+                >(Costo actual del material por kilogramo)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="precioPlastico"
+              placeholder="Ej: 7000 ARS/kg"
+              min="0"
+            />
+          </div>
 
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="tiempoImpresion">
-                        Tiempo de impresión (horas)
-                        <span class="tooltip">(Duración total del proceso de impresión)</span>
-                    </label>
-                    <input type="number" id="tiempoImpresion" placeholder="Ej: 4 h" min="0" step="0.1">
-                </div>
-
-                <div class="input-group">
-                    <label for="mantenimiento">
-                        Mantenimiento (ARS)
-                        <span class="tooltip">(Costo promedio por mantenimiento preventivo)</span>
-                    </label>
-                    <input type="number" id="mantenimiento" placeholder="Ej: 500 ARS" min="0">
-                </div>
-            </div>
-
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="depreciacion">
-                        Depreciación por hora (ARS/h)
-                        <span class="tooltip">(Costo de desgaste de equipo por hora de uso)</span>
-                    </label>
-                    <input type="number" id="depreciacion" placeholder="Ej: 50 ARS/h" min="0">
-                </div>
-
-                <div class="input-group">
-                    <label for="margenError">
-                        Margen de seguridad (%)
-                        <span class="tooltip">(Porcentaje adicional para imprevistos)</span>
-                    </label>
-                    <input type="number" id="margenError" placeholder="Ej: 10%" min="0" max="100">
-                </div>
-            </div>
+          <div class="input-group">
+            <label for="cantidadPlastico">
+              Plástico utilizado (gramos)
+              <span class="tooltip">(Peso real utilizado en la impresión)</span>
+            </label>
+            <input
+              type="number"
+              id="cantidadPlastico"
+              placeholder="Ej: 150 g"
+              min="0"
+            />
+          </div>
         </div>
 
-        <button id="btnCalcular">Calcular Costo Total</button>
+        <div class="input-row">
+          <div class="input-group">
+            <label for="tiempoImpresion">
+              Tiempo de impresión (horas)
+              <span class="tooltip"
+                >(Duración total del proceso de impresión)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="tiempoImpresion"
+              placeholder="Ej: 4 h"
+              min="0"
+              step="0.1"
+            />
+          </div>
 
-        <div class="resultado" id="resultado">
-            <div class="card">
-                <h2>📊 Detalle del Cálculo</h2>
-                <div id="detalleCosto" class="resultado-content"></div>
-            </div>
+          <div class="input-group">
+            <label for="mantenimiento">
+              Mantenimiento (ARS)
+              <span class="tooltip"
+                >(Costo promedio por mantenimiento preventivo)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="mantenimiento"
+              placeholder="Ej: 500 ARS"
+              min="0"
+            />
+          </div>
         </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label for="depreciacion">
+              Depreciación por hora (ARS/h)
+              <span class="tooltip"
+                >(Costo de desgaste de equipo por hora de uso)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="depreciacion"
+              placeholder="Ej: 50 ARS/h"
+              min="0"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="margenError">
+              Margen de seguridad (%)
+              <span class="tooltip"
+                >(Porcentaje adicional para imprevistos)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="margenError"
+              placeholder="Ej: 10%"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+      </div>
+
+      <button id="btnCalcular">Calcular Costo Total</button>
+
+      <div class="resultado" id="resultado">
+        <div class="card">
+          <h2>📊 Detalle del Cálculo</h2>
+          <div id="detalleCosto" class="resultado-content"></div>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
