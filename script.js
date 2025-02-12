@@ -1,119 +1,153 @@
-// Configuración inicial de constantes para los cálculos
 const CONFIG = {
-    ENERGIA_KWH: 113.83, // Costo estimado de la energía por kWh
-    POTENCIA: 0.35, // Potencia del equipo en kW
     DEFAULTS: {
         MANTENIMIENTO: 3000, // Costo de mantenimiento por defecto
         DEPRECIACION: 600, // Costo de depreciación por hora de uso
-        MARGEN_ERROR: 15 // Margen de error para ajustar el costo total
+        MARGEN_ERROR: 15, // Margen de error en porcentaje
+        CONSUMO_IMPRESORA: 0.35, // Consumo eléctrico en kilovatios
+        COSTO_KWH: 0.15, // Costo por kilovatio-hora
+        GANANCIA: 20 // Porcentaje de ganancia deseado
     }
 };
 
-// Función para sanitizar y validar entradas de usuario
-const sanitizeInput = (value, defaultValue = 0) => {
-    const parsed = parseFloat(value); // Convertir el valor a número flotante
-    return isNaN(parsed) || parsed < 0 ? defaultValue : parsed; // Retornar el valor o un valor por defecto si es inválido
+// Función para limpiar errores visuales
+const limpiarErrores = () => {
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
 };
 
-// Función para escapar caracteres HTML y evitar inyección de código
-const escapeHTML = (str) => {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+// Función para mostrar mensajes de error en los campos correspondientes
+const mostrarError = (campoId, mensaje) => {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+
+    campo.classList.add('input-error');
+    const error = document.createElement('div');
+    error.className = 'error-message';
+    error.textContent = mensaje;
+    campo.parentNode.insertBefore(error, campo.nextSibling);
 };
 
-// Función para formatear valores como moneda en pesos argentinos
-const formatARS = (value) => {
-    return new Intl.NumberFormat('es-AR', {
-        style: 'currency',
-        currency: 'ARS',
-        minimumFractionDigits: 2
-    }).format(value);
+// Validaciones de entrada para evitar valores incorrectos
+const validarConsumoImpresora = (valor) => {
+    if (valor <= 0) {
+        mostrarError('consumoImpresora', 'El consumo debe ser mayor a 0');
+        return false;
+    }
+    return true;
+};
+
+const validarCostoKwh = (valor) => {
+    if (valor <= 0) {
+        mostrarError('costoKwh', 'El costo de la energía debe ser mayor a 0');
+        return false;
+    }
+    return true;
+};
+
+const validarGanancia = (valor) => {
+    if (valor < 0) {
+        mostrarError('ganancia', 'La ganancia no puede ser negativa');
+        return false;
+    }
+    return true;
 };
 
 // Función principal para calcular costos
 const calcularCosto = () => {
+    limpiarErrores(); // Elimina errores previos
+
     try {
-        // Obtener y sanitizar los valores ingresados por el usuario
+        // Obtención de valores ingresados por el usuario
         const inputs = {
-            precioPlastico: sanitizeInput(document.getElementById('precioPlastico').value, 7000),
-            cantidadPlastico: sanitizeInput(document.getElementById('cantidadPlastico').value, 150),
-            tiempoImpresion: sanitizeInput(document.getElementById('tiempoImpresion').value, 4),
-            mantenimiento: sanitizeInput(document.getElementById('mantenimiento').value, CONFIG.DEFAULTS.MANTENIMIENTO),
-            depreciacion: sanitizeInput(document.getElementById('depreciacion').value, CONFIG.DEFAULTS.DEPRECIACION),
-            margenError: sanitizeInput(document.getElementById('margenError').value, CONFIG.DEFAULTS.MARGEN_ERROR)
+            precioPlastico: parseFloat(document.getElementById('precioPlastico').value) || 7000,
+            cantidadPlastico: parseFloat(document.getElementById('cantidadPlastico').value) || 150,
+            tiempoImpresion: parseFloat(document.getElementById('tiempoImpresion').value) || 4,
+            mantenimiento: parseFloat(document.getElementById('mantenimiento').value) || CONFIG.DEFAULTS.MANTENIMIENTO,
+            depreciacion: parseFloat(document.getElementById('depreciacion').value) || CONFIG.DEFAULTS.DEPRECIACION,
+            margenError: parseFloat(document.getElementById('margenError').value) || CONFIG.DEFAULTS.MARGEN_ERROR,
+            consumoImpresora: parseFloat(document.getElementById('consumoImpresora').value) || CONFIG.DEFAULTS.CONSUMO_IMPRESORA,
+            costoKwh: parseFloat(document.getElementById('costoKwh').value) || CONFIG.DEFAULTS.COSTO_KWH,
+            ganancia: parseFloat(document.getElementById('ganancia').value) || CONFIG.DEFAULTS.GANANCIA
         };
 
-        // Cálculos de costos individuales
+        // Validaciones de datos ingresados
+        let esValido = true;
+        if (!validarConsumoImpresora(inputs.consumoImpresora)) esValido = false;
+        if (!validarCostoKwh(inputs.costoKwh)) esValido = false;
+        if (!validarGanancia(inputs.ganancia)) esValido = false;
+        if (!esValido) return;
+
+        // Cálculo del costo de energía
+        const costoEnergia = inputs.consumoImpresora * inputs.tiempoImpresion * inputs.costoKwh;
+
+        // Cálculo de costos finales
         const calculations = {
             costoPlastico: (inputs.precioPlastico / 1000) * inputs.cantidadPlastico, // Costo del material plástico
-            costoEnergia: CONFIG.POTENCIA * inputs.tiempoImpresion * CONFIG.ENERGIA_KWH, // Costo del consumo energético
-            costoDepreciacion: inputs.depreciacion * inputs.tiempoImpresion, // Costo de depreciación por el tiempo de uso
-            subtotal: 0, // Inicialización del subtotal
-            ajusteError: 0, // Inicialización del ajuste por margen de error
-            total: 0 // Inicialización del total
+            costoDepreciacion: inputs.depreciacion * inputs.tiempoImpresion, // Costo por depreciación del equipo
+            subtotal: 0,
+            ajusteError: 0,
+            total: 0,
+            gananciaCalculada: 0,
+            precioFinal: 0
         };
 
-        // Cálculo del subtotal (suma de todos los costos)
-        calculations.subtotal = calculations.costoPlastico + calculations.costoEnergia + 
-                               inputs.mantenimiento + calculations.costoDepreciacion;
-                                
-        // Aplicación del margen de error
+        // Sumar todos los costos
+        calculations.subtotal = calculations.costoPlastico + costoEnergia + inputs.mantenimiento + calculations.costoDepreciacion;
         calculations.ajusteError = (calculations.subtotal * inputs.margenError) / 100;
         calculations.total = calculations.subtotal + calculations.ajusteError;
+        calculations.gananciaCalculada = (calculations.total * inputs.ganancia) / 100;
+        calculations.precioFinal = calculations.total + calculations.gananciaCalculada;
 
-        // Generar el resultado en HTML de manera segura
-        const resultadoHTML = `
+        // Mostrar los resultados en pantalla
+        document.getElementById('detalleCosto').innerHTML = `
             <div class="resultado-item">
                 <span>📦 Material plástico:</span>
-                <span>${escapeHTML(formatARS(calculations.costoPlastico))}</span>
+                <span>${calculations.costoPlastico.toFixed(2)}</span>
             </div>
             <div class="resultado-item">
                 <span>⚡ Consumo energético:</span>
-                <span>${escapeHTML(formatARS(calculations.costoEnergia))}</span>
+                <span>${costoEnergia.toFixed(2)}</span>
             </div>
             <div class="resultado-item">
                 <span>🔧 Mantenimiento:</span>
-                <span>${escapeHTML(formatARS(inputs.mantenimiento))}</span>
+                <span>${inputs.mantenimiento.toFixed(2)}</span>
             </div>
             <div class="resultado-item">
                 <span>📉 Depreciación:</span>
-                <span>${escapeHTML(formatARS(calculations.costoDepreciacion))}</span>
+                <span>${calculations.costoDepreciacion.toFixed(2)}</span>
             </div>
             <div class="resultado-item">
                 <span>🎯 Subtotal:</span>
-                <span>${escapeHTML(formatARS(calculations.subtotal))}</span>
+                <span>${calculations.subtotal.toFixed(2)}</span>
             </div>
             <div class="resultado-item">
                 <span>⚠️ Margen de seguridad (${inputs.margenError}%):</span>
-                <span>+${escapeHTML(formatARS(calculations.ajusteError))}</span>
+                <span>+${calculations.ajusteError.toFixed(2)}</span>
+            </div>
+            <div class="resultado-item">
+                <span>💰 Ganancia (${inputs.ganancia}%):</span>
+                <span>+${calculations.gananciaCalculada.toFixed(2)}</span>
             </div>
             <div class="resultado-item total">
-                <span>💰 TOTAL ESTIMADO:</span>
-                <span>${escapeHTML(formatARS(calculations.total))}</span>
+                <span>💵 PRECIO FINAL:</span>
+                <span>${calculations.precioFinal.toFixed(2)}</span>
             </div>
         `;
-
-        // Insertar el resultado en el DOM
-        document.getElementById('detalleCosto').innerHTML = resultadoHTML;
 
     } catch (error) {
-        // Manejo de errores y mostrar mensaje de error en el DOM
-        document.getElementById('detalleCosto').innerHTML = `
-            <div class="error-message">
-                ❌ Error en el cálculo: ${escapeHTML(error.message)}
-            </div>
-        `;
+        console.error("Error durante el cálculo:", error);
+        mostrarError('detalleCosto', "Se produjo un error inesperado: " + error.message);
     }
 };
 
-// Inicialización del script cuando la página está lista
+// Inicialización de eventos y valores por defecto
 document.addEventListener('DOMContentLoaded', () => {
-    // Establecer valores por defecto en los campos de entrada
+    document.getElementById('btnCalcular').addEventListener('click', calcularCosto);
+    
+    document.getElementById('consumoImpresora').value = CONFIG.DEFAULTS.CONSUMO_IMPRESORA;
+    document.getElementById('costoKwh').value = CONFIG.DEFAULTS.COSTO_KWH;
     document.getElementById('mantenimiento').value = CONFIG.DEFAULTS.MANTENIMIENTO;
     document.getElementById('depreciacion').value = CONFIG.DEFAULTS.DEPRECIACION;
     document.getElementById('margenError').value = CONFIG.DEFAULTS.MARGEN_ERROR;
-    
-    // Asignar evento al botón de cálculo
-    document.getElementById('btnCalcular').addEventListener('click', calcularCosto);
+    document.getElementById('ganancia').value = CONFIG.DEFAULTS.GANANCIA;
 });

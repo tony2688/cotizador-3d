@@ -82,8 +82,8 @@ label {
     margin-top: 0.25rem;
 }
 
-/* Estilos de los inputs */
-input {
+/* Estilos de los inputs y selectores */
+input, select {
     width: 100%;
     padding: 0.8rem;
     border: 2px solid var(--border);
@@ -92,8 +92,8 @@ input {
     transition: var(--transition);
 }
 
-/* Efecto al enfocar un input */
-input:focus {
+/* Efecto al enfocar un input o selector */
+input:focus, select:focus {
     border-color: var(--primary);
     outline: none;
     box-shadow: 0 0 0 3px rgba(42, 42, 114, 0.1);
@@ -140,6 +140,20 @@ button:hover {
     font-size: 1.2rem;
 }
 
+/* Estilos para mensajes de error */
+.error-message {
+    color: var(--error);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+/* Resaltar inputs con error */
+.input-error {
+    border-color: var(--error);
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+}
+
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
     .container {
@@ -158,12 +172,4 @@ button:hover {
     button {
         font-size: 1rem;
     }
-}
-
-/* Estilos para mensajes de error */
-.error-message {
-    color: var(--error);
-    padding: 1rem;
-    text-align: center;
-    display: none;
 }

@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" /> <!-- Configuración de codificación para caracteres especiales -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Ajuste para dispositivos móviles -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> <!-- Política de seguridad del contenido -->
-    <title>Cotizador Profesional Bambu Lab A1 Mini</title> <!-- Título de la página -->
-    <link rel="stylesheet" href="styles.css" /> <!-- Enlace al archivo de estilos -->
+    <meta charset="UTF-8" />
+    <!-- Configuración de codificación de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Permite la correcta visualización en dispositivos móviles -->
+    <title>Cotizador Profesional de Impresión 3D</title>
+    <!-- Título de la página -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Enlace al archivo CSS -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
-    /> <!-- Fuente de Google Fonts -->
+    />
+    <!-- Fuente externa -->
   </head>
   <body>
-    <div class="container"> <!-- Contenedor principal -->
-      <h1>💰 Cotizador de Impresión 3D</h1> <!-- Título principal -->
+    <div class="container">
+      <!-- Contenedor principal -->
+      <h1>💰 Cotizador de Impresión 3D</h1>
+      <!-- Título principal -->
 
-      <div class="input-section"> <!-- Sección de entrada de datos -->
-        <div class="input-row"> <!-- Fila de inputs -->
+      <div class="input-section">
+        <!-- Sección de entradas de datos -->
+
+        <!-- Primera fila de entradas -->
+        <div class="input-row">
           <div class="input-group">
             <label for="precioPlastico">
-              Precio por kilo de plástico (ARS)
-              <span class="tooltip">(Costo actual del material por kilogramo)</span>
+              Precio por kilo de plástico
+              <span class="tooltip"
+                >(Costo actual del material por kilogramo)</span
+              >
             </label>
             <input
               type="number"
               id="precioPlastico"
-              placeholder="Ej: 7000 ARS/kg"
+              placeholder="Ej: 7000"
               min="0"
             />
           </div>
@@ -38,22 +49,25 @@
             <input
               type="number"
               id="cantidadPlastico"
-              placeholder="Ej: 150 g"
+              placeholder="Ej: 150"
               min="0"
             />
           </div>
         </div>
 
-        <div class="input-row"> <!-- Segunda fila de inputs -->
+        <!-- Segunda fila de entradas -->
+        <div class="input-row">
           <div class="input-group">
             <label for="tiempoImpresion">
               Tiempo de impresión (horas)
-              <span class="tooltip">(Duración total del proceso de impresión)</span>
+              <span class="tooltip"
+                >(Duración total del proceso de impresión)</span
+              >
             </label>
             <input
               type="number"
               id="tiempoImpresion"
-              placeholder="Ej: 4 h"
+              placeholder="Ej: 4"
               min="0"
               step="0.1"
             />
@@ -61,28 +75,33 @@
 
           <div class="input-group">
             <label for="mantenimiento">
-              Mantenimiento (ARS)
-              <span class="tooltip">(Costo promedio por mantenimiento preventivo)</span>
+              Mantenimiento
+              <span class="tooltip"
+                >(Costo promedio por mantenimiento preventivo)</span
+              >
             </label>
             <input
               type="number"
               id="mantenimiento"
-              placeholder="Ej: 500 ARS"
+              placeholder="Ej: 500"
               min="0"
             />
           </div>
         </div>
 
-        <div class="input-row"> <!-- Tercera fila de inputs -->
+        <!-- Tercera fila de entradas -->
+        <div class="input-row">
           <div class="input-group">
             <label for="depreciacion">
-              Depreciación por hora (ARS/h)
-              <span class="tooltip">(Costo de desgaste de equipo por hora de uso)</span>
+              Depreciación por hora
+              <span class="tooltip"
+                >(Costo de desgaste de equipo por hora de uso)</span
+              >
             </label>
             <input
               type="number"
               id="depreciacion"
-              placeholder="Ej: 50 ARS/h"
+              placeholder="Ej: 50"
               min="0"
             />
           </div>
@@ -90,12 +109,68 @@
           <div class="input-group">
             <label for="margenError">
               Margen de seguridad (%)
-              <span class="tooltip">(Porcentaje adicional para imprevistos)</span>
+              <span class="tooltip"
+                >(Porcentaje adicional para imprevistos)</span
+              >
             </label>
             <input
               type="number"
               id="margenError"
-              placeholder="Ej: 10%"
+              placeholder="Ej: 10"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+
+        <!-- Cuarta fila de entradas -->
+        <div class="input-row">
+          <div class="input-group">
+            <label for="consumoImpresora">
+              Consumo eléctrico de la impresora (kW)
+              <span class="tooltip"
+                >(Potencia en kilovatios de la impresora)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="consumoImpresora"
+              placeholder="Ej: 0.35"
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="costoKwh">
+              Costo de la energía (kWh)
+              <span class="tooltip"
+                >(Costo por kilovatio-hora en tu moneda local)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="costoKwh"
+              placeholder="Ej: 0.15"
+              min="0"
+              step="0.01"
+            />
+          </div>
+        </div>
+
+        <!-- Quinta fila de entradas -->
+        <div class="input-row">
+          <div class="input-group">
+            <label for="ganancia">
+              Ganancia deseada (%)
+              <span class="tooltip"
+                >(Porcentaje de ganancia sobre el costo total)</span
+              >
+            </label>
+            <input
+              type="number"
+              id="ganancia"
+              placeholder="Ej: 20"
               min="0"
               max="100"
             />
@@ -103,16 +178,19 @@
         </div>
       </div>
 
-      <button id="btnCalcular">Calcular Costo Total</button> <!-- Botón para calcular el costo total -->
+      <!-- Botón para calcular el costo total -->
+      <button id="btnCalcular">Calcular Costo Total</button>
 
-      <div class="resultado" id="resultado"> <!-- Sección para mostrar el resultado -->
+      <!-- Sección donde se mostrará el resultado -->
+      <div class="resultado" id="resultado">
         <div class="card">
-          <h2>📊 Detalle del Cálculo</h2> <!-- Título del resultado -->
-          <div id="detalleCosto" class="resultado-content"></div> <!-- Contenedor donde se mostrarán los cálculos -->
+          <h2>📊 Detalle del Cálculo</h2>
+          <div id="detalleCosto" class="resultado-content"></div>
         </div>
       </div>
     </div>
 
-    <script src="script.js"></script> <!-- Enlace al script de JavaScript -->
+    <script src="script.js"></script>
+    <!-- Inclusión del archivo JavaScript -->
   </body>
 </html>
