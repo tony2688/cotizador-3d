@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
-    <title>Cotizador Profesional Bambu Lab A1 Mini</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" /> <!-- Configuración de codificación para caracteres especiales -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Ajuste para dispositivos móviles -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> <!-- Política de seguridad del contenido -->
+    <title>Cotizador Profesional Bambu Lab A1 Mini</title> <!-- Título de la página -->
+    <link rel="stylesheet" href="styles.css" /> <!-- Enlace al archivo de estilos -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
-    />
+    /> <!-- Fuente de Google Fonts -->
   </head>
   <body>
-    <div class="container">
-      <h1>💰 Cotizador de Impresión 3D</h1>
+    <div class="container"> <!-- Contenedor principal -->
+      <h1>💰 Cotizador de Impresión 3D</h1> <!-- Título principal -->
 
-      <div class="input-section">
-        <div class="input-row">
+      <div class="input-section"> <!-- Sección de entrada de datos -->
+        <div class="input-row"> <!-- Fila de inputs -->
           <div class="input-group">
             <label for="precioPlastico">
               Precio por kilo de plástico (ARS)
-              <span class="tooltip"
-                >(Costo actual del material por kilogramo)</span
-              >
+              <span class="tooltip">(Costo actual del material por kilogramo)</span>
             </label>
             <input
               type="number"
@@ -46,13 +44,11 @@
           </div>
         </div>
 
-        <div class="input-row">
+        <div class="input-row"> <!-- Segunda fila de inputs -->
           <div class="input-group">
             <label for="tiempoImpresion">
               Tiempo de impresión (horas)
-              <span class="tooltip"
-                >(Duración total del proceso de impresión)</span
-              >
+              <span class="tooltip">(Duración total del proceso de impresión)</span>
             </label>
             <input
               type="number"
@@ -66,9 +62,7 @@
           <div class="input-group">
             <label for="mantenimiento">
               Mantenimiento (ARS)
-              <span class="tooltip"
-                >(Costo promedio por mantenimiento preventivo)</span
-              >
+              <span class="tooltip">(Costo promedio por mantenimiento preventivo)</span>
             </label>
             <input
               type="number"
@@ -79,13 +73,11 @@
           </div>
         </div>
 
-        <div class="input-row">
+        <div class="input-row"> <!-- Tercera fila de inputs -->
           <div class="input-group">
             <label for="depreciacion">
               Depreciación por hora (ARS/h)
-              <span class="tooltip"
-                >(Costo de desgaste de equipo por hora de uso)</span
-              >
+              <span class="tooltip">(Costo de desgaste de equipo por hora de uso)</span>
             </label>
             <input
               type="number"
@@ -98,9 +90,7 @@
           <div class="input-group">
             <label for="margenError">
               Margen de seguridad (%)
-              <span class="tooltip"
-                >(Porcentaje adicional para imprevistos)</span
-              >
+              <span class="tooltip">(Porcentaje adicional para imprevistos)</span>
             </label>
             <input
               type="number"
@@ -113,16 +103,16 @@
         </div>
       </div>
 
-      <button id="btnCalcular">Calcular Costo Total</button>
+      <button id="btnCalcular">Calcular Costo Total</button> <!-- Botón para calcular el costo total -->
 
-      <div class="resultado" id="resultado">
+      <div class="resultado" id="resultado"> <!-- Sección para mostrar el resultado -->
         <div class="card">
-          <h2>📊 Detalle del Cálculo</h2>
-          <div id="detalleCosto" class="resultado-content"></div>
+          <h2>📊 Detalle del Cálculo</h2> <!-- Título del resultado -->
+          <div id="detalleCosto" class="resultado-content"></div> <!-- Contenedor donde se mostrarán los cálculos -->
         </div>
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js"></script> <!-- Enlace al script de JavaScript -->
   </body>
 </html>
